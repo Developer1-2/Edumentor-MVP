@@ -1,7 +1,3 @@
-fastapi
-uvicorn
-sqlalchemy
-pydantic
-bcrypt[email]
-bcrypt
-
+-r edumentor_mvp_backennd/requirements.txt
+# Top-level requirements wrapper so hosting platforms that install from repo root
+# will pick up the project's dependencies.
