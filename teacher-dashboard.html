@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Edumentor</title>
+    <style>
+        :root{--green-1:#27ae60;--green-2:#229954;--green-3:#1e8449;--text:#2c3e50;--bg:#f8faf6}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:var(--bg);color:var(--text)}
+        header{background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff;padding:16px 0;box-shadow:0 4px 15px rgba(39,174,96,0.15);position:sticky;top:0;z-index:100}
+        .navbar{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 20px}
+        .logo{font-size:24px;font-weight:700}
+        .nav-right{display:flex;align-items:center;gap:16px}
+        .user-info{display:flex;align-items:center;gap:8px}
+        .user-avatar{width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+        .btn-logout{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:8px 14px;border-radius:6px;cursor:pointer;transition:background .18s;font-weight:600}
+        .btn-logout:hover{background:rgba(255,255,255,0.25)}
+        .container{max-width:1200px;margin:32px auto;padding:0 20px}
+        .welcome{background:#fff;padding:26px;border-radius:12px;margin-bottom:26px;box-shadow:0 4px 15px rgba(39,174,96,0.06);border-top:5px solid var(--green-1)}
+        .welcome h1{color:var(--text);margin-bottom:8px;font-size:32px}
+        .welcome p{color:#556b5f;margin-bottom:12px}
+        .status-badge{display:inline-block;background:var(--green-1);color:#fff;padding:8px 14px;border-radius:20px;font-size:13px;font-weight:700}
+        .dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;margin-bottom:32px}
+        .card{background:#fff;padding:24px;border-radius:12px;box-shadow:0 4px 15px rgba(39,174,96,0.06);transition:transform .18s,box-shadow .18s;border-left:4px solid var(--green-1)}
+        .card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(39,174,96,0.12)}
+        .card-icon{font-size:40px;margin-bottom:12px}
+        .card h3{color:var(--text);margin-bottom:10px;font-size:18px}
+        .card p{color:#556b5f;font-size:13px;line-height:1.6;margin-bottom:12px}
+        .btn{display:inline-block;padding:10px 18px;background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff;text-decoration:none;border-radius:8px;cursor:pointer;border:none;font-weight:600;transition:transform .18s,box-shadow .18s;font-size:13px}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(39,174,96,0.12)}
+        .opportunities{background:#fff;padding:26px;border-radius:12px;box-shadow:0 4px 15px rgba(39,174,96,0.06)}
+        .opportunities h2{color:var(--text);margin-bottom:18px;font-size:22px}
+        .opportunity-item{border:1px solid #eee;padding:18px;border-radius:10px;margin-bottom:12px;transition:all .18s}
+        .opportunity-item:hover{border-color:var(--green-1);background:#f9fef8;}
+        .opportunity-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
+        .opportunity-item h4{color:var(--text);margin-bottom:4px;font-size:16px}
+        .opportunity-item p{color:#556b5f;font-size:13px;margin-bottom:4px}
+        .badge{display:inline-block;background:#f0fbf4;color:var(--green-3);padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700}
+        .empty-state{text-align:center;padding:40px 20px;color:#999}
+        .empty-state-icon{font-size:60px;margin-bottom:16px}
+        @media(max-width:768px){.navbar{flex-wrap:wrap;gap:10px}.welcome h1{font-size:24px}.dashboard-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">Education Platform</div>
+            <div class="nav-right">
+                <div class="user-info">
+                    <div class="user-avatar"></div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-start">
+                        <span id="userName">Teacher</span>
+                        <a id="userPhone" href="#" style="color:#fff;font-size:12px;opacity:0.95;text-decoration:underline;">Set phone</a>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">Logout</button>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome">
+            <h1>Welcome to Your Dashboard!</h1>
+            <p id="welcomeText">You're all set and visible on our platform</p>
+            <span class="status-badge">Active and Visible</span>
+        </div>
+        
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-icon">Profile</div>
+                <h3>Profile</h3>
+                <p>Complete and update your teacher profile to attract more opportunities.</p>
+                <a href="#" class="btn">Edit Profile</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">Statistics</div>
+                <h3>Statistics</h3>
+                <p>Track your profile views and applications from schools and parents.</p>
+                <a href="#" class="btn">View Stats</a>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">Messages</div>
+                <h3>Messages</h3>
+                <p>Communicate directly with schools and parents interested in your services.</p>
+                <a href="#" class="btn">Messages <span id="messageCount">0</span></a>
+            </div>
+        </div>
+        
+        <!-- Opportunities Section -->
+        <div class="opportunities">
+            <h2>Recent Job Postings</h2>
+            <div id="opportunitiesList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">No Jobs</div>
+                    <p>No job postings available yet. Check back soon!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="opportunities" style="margin-top:32px;">
+            <h2>Notifications</h2>
+            <div id="notificationsList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔔</div>
+                    <p>No notifications yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // API base (dynamic). Uses window.location.origin when served over http(s), otherwise falls back to localhost backend.
+        const API_BASE = (window._API_BASE_ || (location.protocol.startsWith('http') ? window.location.origin : 'http://127.0.0.1:8000'));
+
+        // Get user data from localStorage
+        const userName = localStorage.getItem('userName') || 'Teacher';
+        document.getElementById('userName').textContent = userName;
+        const storedPhone = localStorage.getItem('user_phone') || '';
+        const userPhoneEl = document.getElementById('userPhone');
+        userPhoneEl.textContent = storedPhone ? storedPhone : 'Add phone';
+        document.getElementById('welcomeText').textContent = 'Welcome back, ' + userName + '!';
+
+        // Allow quick edit of phone for testing
+        userPhoneEl.addEventListener('click', (e) => {
+            e.preventDefault();
+            const newPhone = prompt('Enter your phone number for testing (visible on listings):', storedPhone || '');
+            if (newPhone !== null) {
+                localStorage.setItem('user_phone', newPhone.trim());
+                userPhoneEl.textContent = newPhone.trim() || 'Add phone';
+                alert('Phone saved locally for testing.');
+            }
+        });
+        
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Clear auth and teacher-specific keys
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('teacher_id');
+            localStorage.removeItem('user_phone');
+            window.location.href = 'index.html';
+        });
+        
+        // Load opportunities (jobs) from backend API
+        async function loadOpportunities() {
+            const opportunitiesList = document.getElementById('opportunitiesList');
+            const teacherId = localStorage.getItem('teacher_id');
+            opportunitiesList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading jobs...</p></div>';
+            try {
+                const response = await fetch(API_BASE + '/jobs/');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch jobs');
+                }
+                const data = await response.json();
+                const opportunities = data.jobs || [];
+                if (opportunities.length > 0) {
+                    opportunitiesList.innerHTML = opportunities.map(function(opp) {
+                        return `<div class="opportunity-item">
+                            <div class="opportunity-header">
+                                <div>
+                                    <h4>${opp.title}</h4>
+                                    <p><strong>${opp.school_name || 'Unknown School'}</strong></p>
+                                </div>
+                                <span class="badge">${opp.subject || ''}</span>
+                            </div>
+                            <p>Salary: ${opp.salary || 'Negotiable'}</p>
+                            <p><strong>Experience:</strong> ${opp.experience || 'Not specified'}</p>
+                            <p>${opp.description || 'No description'}</p>
+                            <button class="btn" onclick="applyJob(${opp.id})">Apply Now</button>
+                            <span id="applyStatus${opp.id}" style="margin-left:10px;color:#229954;font-weight:600;"></span>
+                        </div>`;
+                    }).join('');
+                } else {
+                    opportunitiesList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">Jobs</div><p>No jobs available. Check back soon!</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading opportunities:', error);
+                opportunitiesList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">Error</div><p>Unable to load jobs</p></div>';
+            }
+        }
+
+        async function applyJob(jobId) {
+            const teacherId = localStorage.getItem('teacher_id');
+            if (!teacherId) {
+                alert('Teacher ID not found. Please log in again.');
+                return;
+            }
+            const statusSpan = document.getElementById('applyStatus' + jobId);
+            statusSpan.textContent = 'Applying...';
+            try {
+                const response = await fetch(API_BASE + '/jobs/apply/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ job_id: jobId, teacher_id: parseInt(teacherId) })
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to apply');
+                }
+                statusSpan.textContent = 'Applied!';
+            } catch (error) {
+                statusSpan.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Notifications for teacher
+        async function loadNotifications() {
+            const notificationsList = document.getElementById('notificationsList');
+            const teacherId = localStorage.getItem('teacher_id');
+            notificationsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading notifications...</p></div>';
+            if (!teacherId) {
+                notificationsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Teacher ID not found.</p></div>';
+                return;
+            }
+            try {
+                const response = await fetch(API_BASE + '/auth/notifications/' + teacherId);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch notifications');
+                }
+                const notifs = await response.json();
+                if (notifs.length > 0) {
+                    notificationsList.innerHTML = notifs.map(n => `<div class="opportunity-item" style="background:#f7f9f6;">
+                        <div><strong>${n.type === 'job_posted' ? 'New Job Posted' : 'Application Update'}</strong></div>
+                        <div>${n.content}</div>
+                        <div style="font-size:11px;color:#888;">${new Date(n.created_at).toLocaleString()}</div>
+                    </div>`).join('');
+                } else {
+                    notificationsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔔</div><p>No notifications yet.</p></div>';
+                }
+            } catch (error) {
+                notificationsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Error loading notifications</p></div>';
+            }
+        }
+
+        // Load opportunities and notifications on page load
+        loadOpportunities();
+        loadNotifications();
+    </script>
+</body>
+</html>

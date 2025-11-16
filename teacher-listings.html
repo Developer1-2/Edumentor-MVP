@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Teachers - Edumentor</title>
+    <style>
+        :root{--green-1:#27ae60;--green-2:#229954;--green-3:#1e8449;--text:#2c3e50;--bg:#f8faf6}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:var(--bg);color:var(--text)}
+        header{background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff;padding:16px 0;box-shadow:0 4px 15px rgba(39,174,96,0.15);position:sticky;top:0;z-index:100}
+        .navbar{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 20px}
+        .logo{font-size:24px;font-weight:700;text-decoration:none;color:#fff}
+        .nav-right{display:flex;gap:16px;align-items:center}
+        .nav-right a,.nav-right button{color:#fff;text-decoration:none;background:none;border:none;cursor:pointer}
+        .container{max-width:1200px;margin:32px auto;padding:0 20px}
+        .page-header{margin-bottom:32px}
+        .page-header h1{font-size:32px;margin-bottom:8px}
+        .page-header p{color:#556b5f;font-size:16px}
+        .search-filter{background:#fff;padding:22px;border-radius:12px;margin-bottom:26px;box-shadow:0 4px 15px rgba(39,174,96,0.06)}
+        .filter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+        .filter-group{display:flex;flex-direction:column}
+        .filter-group label{font-weight:600;margin-bottom:6px;color:var(--text);font-size:13px}
+        .filter-group input,.filter-group select{padding:10px;border:1px solid #eee;border-radius:8px;font-family:inherit;transition:border-color .18s}
+        .filter-group input:focus,.filter-group select:focus{outline:none;border-color:var(--green-1);box-shadow:0 4px 12px rgba(39,174,96,0.08)}
+        .teachers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-bottom:32px}
+        .teacher-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(39,174,96,0.06);transition:transform .18s,box-shadow .18s}
+        .teacher-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(39,174,96,0.12)}
+        .teacher-avatar{background:linear-gradient(135deg,var(--green-1),var(--green-2));height:150px;display:flex;align-items:center;justify-content:center;font-size:60px}
+        .teacher-info{padding:18px}
+        .teacher-name{font-size:18px;font-weight:700;margin-bottom:4px;color:var(--text)}
+        .teacher-subject{color:var(--green-3);font-weight:700;margin-bottom:8px;font-size:13px}
+        .teacher-detail{display:flex;align-items:center;color:#556b5f;font-size:12px;margin-bottom:6px}
+        .teacher-bio{color:#556b5f;font-size:12px;line-height:1.5;margin:12px 0;padding-top:12px;border-top:1px solid #eee}
+        .action-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+        .btn{padding:8px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:12px;text-align:center;text-decoration:none;transition:all .18s}
+        .btn-primary{background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(39,174,96,0.12)}
+        .btn-secondary{background:#f7f9f6;color:var(--green-3);border:1px solid #eee}
+        .btn-secondary:hover{background:var(--green-1);color:#fff}
+        .empty-state{text-align:center;padding:60px 20px;background:#fff;border-radius:12px;color:#999}
+        .empty-state-icon{font-size:80px;margin-bottom:18px}
+        .badge{display:inline-block;background:#f0fbf4;color:var(--green-3);padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;margin-left:4px}
+        @media(max-width:768px){.filter-grid{grid-template-columns:1fr}.teachers-grid{grid-template-columns:1fr}.page-header h1{font-size:24px}}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">🎓 Edumentor</a>
+            <div class="nav-right">
+                <a href="school-dashboard.html">← Back to Dashboard</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>👥 Find Qualified Teachers</h1>
+            <p>Browse our active teachers and contact them directly</p>
+        </div>
+        
+        <!-- Search & Filter -->
+        <div class="search-filter">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="searchName">Teacher Name</label>
+                    <input type="text" id="searchName" placeholder="Search by name...">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="searchSubject">Subject/Specialization</label>
+                    <input type="text" id="searchSubject" placeholder="e.g., Mathematics, English...">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="searchLocation">Location</label>
+                    <input type="text" id="searchLocation" placeholder="e.g., Kampala, Wakiso...">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="searchExperience">Experience</label>
+                    <select id="searchExperience">
+                        <option value="">All Levels</option>
+                        <option value="beginner">0-2 Years</option>
+                        <option value="intermediate">2-5 Years</option>
+                        <option value="expert">5+ Years</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Teachers Grid -->
+        <div id="teachersContainer" class="teachers-grid">
+            <!-- Teachers will be loaded here -->
+        </div>
+    </div>
+    
+    <script>
+        // API base (dynamic). Uses window.location.origin when served over http(s), otherwise falls back to localhost backend.
+        const API_BASE = (window._API_BASE_ || (location.protocol.startsWith('http') ? window.location.origin : 'http://127.0.0.1:8000'));
+
+        // Teachers will be loaded from server
+        let allTeachers = [];
+        let filteredTeachers = [];
+        
+        // Render teachers
+        function renderTeachers() {
+            const container = document.getElementById('teachersContainer');
+            
+            if (filteredTeachers.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1;">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🔍</div>
+                            <h3>No teachers found</h3>
+                            <p>Try adjusting your search filters</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredTeachers.map(teacher => `
+                <div class="teacher-card">
+                    <div class="teacher-avatar">👨‍🏫</div>
+                    <div class="teacher-info">
+                        <div class="teacher-name">
+                            ${teacher.name}
+                            ${teacher.verified ? '<span class="badge">✓ Verified</span>' : ''}
+                        </div>
+                        <div class="teacher-subject">📚 ${teacher.subject}</div>
+                        <div class="teacher-detail">
+                            <strong>📍</strong> ${teacher.location}
+                        </div>
+                        <div class="teacher-detail">
+                            <strong>📞</strong> ${teacher.phone || 'Not provided'}
+                        </div>
+                        <div class="teacher-detail">
+                            <strong>⏳</strong> ${teacher.experience ? teacher.experience + ' years' : getExperienceLabel(teacher.experience)}
+                        </div>
+                        <div class="teacher-bio">${teacher.bio}</div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="contactTeacher(${teacher.id}, '${teacher.name}')">💬 Message</button>
+                            <button class="btn btn-secondary" onclick="viewProfile(${teacher.id})">👤 View</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getExperienceLabel(exp) {
+            const labels = {
+                'beginner': '0-2 Years',
+                'intermediate': '2-5 Years',
+                'expert': '5+ Years'
+            };
+            return labels[exp] || exp;
+        }
+        
+        // Search & Filter
+        function applyFilters() {
+            const name = document.getElementById('searchName').value.toLowerCase();
+            const subject = document.getElementById('searchSubject').value.toLowerCase();
+            const location = document.getElementById('searchLocation').value.toLowerCase();
+            const experience = document.getElementById('searchExperience').value;
+            
+            filteredTeachers = allTeachers.filter(teacher => {
+                const matchName = teacher.name.toLowerCase().includes(name);
+                const matchSubject = teacher.subject.toLowerCase().includes(subject);
+                const matchLocation = teacher.location.toLowerCase().includes(location);
+                const matchExperience = !experience || teacher.experience === experience;
+                
+                return matchName && matchSubject && matchLocation && matchExperience;
+            });
+            
+            renderTeachers();
+        }
+        
+        // Event listeners
+        document.getElementById('searchName').addEventListener('input', applyFilters);
+        document.getElementById('searchSubject').addEventListener('input', applyFilters);
+        document.getElementById('searchLocation').addEventListener('input', applyFilters);
+        document.getElementById('searchExperience').addEventListener('change', applyFilters);
+        
+        // Action functions
+        function contactTeacher(id, name) {
+            alert(`Message sent to ${name}!\n\n(Messaging feature coming soon)`);
+        }
+        
+        function viewProfile(id) {
+            alert(`View full profile for teacher #${id}\n\n(Detailed profile page coming soon)`);
+        }
+        
+        // Load teachers from backend API and render
+        async function loadTeachers() {
+            try {
+                // Use dynamic API_BASE when possible
+                const res = await fetch(`${API_BASE}/teachers/`);
+                if (!res.ok) throw new Error('Failed to fetch teachers');
+                const data = await res.json();
+                allTeachers = (data.teachers || []).map(t => ({
+                    id: t.id,
+                    name: t.name || `Teacher #${t.id}`,
+                    subject: t.subject || '',
+                    experience: t.experience || null,
+                    location: t.location || '',
+                    phone: t.phone || null,
+                    bio: t.bio || '',
+                    verified: !!t.verified
+                }));
+                // Initially show all
+                filteredTeachers = [...allTeachers];
+                renderTeachers();
+            } catch (err) {
+                const container = document.getElementById('teachersContainer');
+                container.innerHTML = `<div style="grid-column:1/-1;"><div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>Unable to load teachers</h3><p>${err.message}</p></div></div>`;
+            }
+        }
+
+        // Initial load
+        loadTeachers();
+    </script>
+</body>
+</html>

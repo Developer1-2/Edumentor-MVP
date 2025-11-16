@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Edumentor</title>
+    <style>
+        :root{--green-1:#27ae60;--green-2:#229954;--green-3:#1e8449;--text:#2c3e50}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,var(--green-1),var(--green-2));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        body::before{content:'';position:fixed;width:200%;height:200%;top:-50%;left:-50%;background:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:50px 50px;animation:float 15s linear infinite;z-index:0;pointer-events:none}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        .container{background:#fff;padding:40px;border-radius:12px;max-width:580px;width:100%;text-align:center;z-index:1;box-shadow:0 20px 60px rgba(39,174,96,0.12);animation:fadeInUp .7s ease-out}
+        .success-icon{font-size:80px;margin-bottom:18px;animation:bounce .8s cubic-bezier(0.68,-0.55,0.265,1.55)}
+        h1{color:var(--green-1);margin-bottom:12px;font-size:32px}
+        .subtitle{color:#556b5f;margin-bottom:22px;font-size:16px;line-height:1.6}
+        .details{background:#f7f9f6;padding:18px;border-radius:10px;margin-bottom:22px;text-align:left}
+        .detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;color:var(--text);font-size:14px}
+        .detail-row:last-child{border-bottom:none}
+        .detail-label{font-weight:600;color:#556b5f}
+        .detail-value{font-weight:600}
+        .next-steps{background:#f0fbf4;border-left:4px solid var(--green-1);padding:18px;border-radius:8px;text-align:left;margin-bottom:22px}
+        .next-steps h3{color:var(--text);margin-bottom:12px}
+        .next-steps ol{margin-left:20px;color:#556b5f;line-height:1.8;font-size:14px}
+        .next-steps li{margin-bottom:8px}
+        .btn-group{display:flex;gap:12px;flex-direction:column}
+        .btn{padding:12px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .18s,box-shadow .18s;border:none;display:inline-block}
+        .btn-primary{background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(39,174,96,0.16)}
+        .btn-secondary{background:#f7f9f6;color:var(--green-3);border:2px solid var(--green-1)}
+        .btn-secondary:hover{background:var(--green-1);color:#fff}
+        @media(max-width:480px){.container{padding:26px}.success-icon{font-size:60px}h1{font-size:28px}.btn-group{flex-direction:column}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✅</div>
+        <h1>Payment Successful!</h1>
+        <p class="subtitle">Your account has been activated. You're now visible to schools and parents on the Edumentor platform.</p>
+        
+        <div class="details">
+            <div class="detail-row">
+                <span class="detail-label">Transaction Status:</span>
+                <span class="detail-value">✓ Confirmed</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Amount Paid:</span>
+                <span class="detail-value">UGX 50,000</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Valid Until:</span>
+                <span class="detail-value" id="validUntil">3 months</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value">🟢 Active</span>
+            </div>
+        </div>
+        
+        <div class="next-steps">
+            <h3>What's Next?</h3>
+            <ol>
+                <li>Complete your teacher profile with your qualifications</li>
+                <li>Upload your profile photo and credentials</li>
+                <li>Schools can now find you and post relevant job offers</li>
+                <li>Connect with parents looking for tutoring services</li>
+            </ol>
+        </div>
+        
+        <div class="btn-group">
+            <a href="teacher-dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+            <a href="index.html" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        // Set validity date
+        const validUntil = new Date();
+        validUntil.setMonth(validUntil.getMonth() + 3);
+        document.getElementById('validUntil').textContent = validUntil.toLocaleDateString();
+    </script>
+</body>
+</html>

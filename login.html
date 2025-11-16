@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Edumentor</title>
+    <style>
+        :root{
+            --green-1: #27ae60;
+            --green-2: #229954;
+            --green-3: #1e8449;
+            --bg-light: #f9f9f9;
+            --text-dark: #2c3e50;
+        }
+
+        *{box-sizing:border-box;margin:0;padding:0}
+
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg,var(--green-1) 0%,var(--green-2) 100%);
+            min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;overflow-x:hidden;color:var(--text-dark)
+        }
+
+        /* decorative floating dots */
+        body::before{
+            content:'';position:fixed;width:200%;height:200%;top:-50%;left:-50%;background:radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);background-size:50px 50px;animation:float 15s ease-in-out infinite;z-index:0;pointer-events:none
+        }
+
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+        @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+        @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+        .container{
+            background:#fff;padding:36px;border-radius:14px;box-shadow:0 20px 60px rgba(39,174,96,0.12);max-width:480px;width:100%;z-index:1;position:relative;border-top:5px solid var(--green-1);animation:fadeIn .8s ease-out
+        }
+
+        .logo{font-size:48px;text-align:center;margin-bottom:18px;animation:float 3s ease-in-out infinite}
+
+        h1{font-size:22px;text-align:center;color:var(--text-dark);margin-bottom:6px;font-weight:600}
+        p.subtitle{color:#5b6b62;text-align:center;margin-bottom:22px}
+
+        .form-group{margin-bottom:14px;opacity:0;animation:fadeInUp .7s ease-out forwards}
+        .form-group:nth-child(1){animation-delay:.18s}.form-group:nth-child(2){animation-delay:.26s}.form-group:nth-child(3){animation-delay:.34s}
+
+        label{display:block;margin-bottom:8px;font-size:13px;color:#56615a}
+        input,select{width:100%;padding:12px 14px;border:2px solid #e6e6e6;border-radius:8px;background:var(--bg-light);font-size:14px;transition:all .25s}
+        input:focus,select:focus{outline:none;border-color:var(--green-1);box-shadow:0 6px 20px rgba(39,174,96,0.08);font-weight:600;animation:slideInLeft .6s ease-out}
+
+        .role-selection{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .role-option{display:flex;align-items:center;padding:10px;border-radius:8px;border:1px solid transparent;transition:all .2s;background:white}
+        .role-option:hover{border-color:rgba(39,174,96,0.15);transform:translateY(-2px)}
+        .role-option input[type="radio"]{margin-right:8px}
+
+        .btn{display:inline-block;width:100%;padding:12px 18px;background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s}
+        .btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(39,174,96,0.18)}
+        .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.12);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+        .btn:hover::before{width:300px;height:300px}
+        .btn:disabled{opacity:.7;cursor:not-allowed}
+
+        .alert{display:none;padding:12px 14px;border-radius:8px;margin-bottom:12px}
+        .alert.alert-info{background:#fff8e6;color:#6a5a00;border:1px solid #fff0c9}
+        .alert.alert-error{background:#fdecea;color:#7a2a2a;border:1px solid #f5c6cb}
+
+        .loading{display:none;text-align:center;color:var(--green-2);font-weight:700}
+        .spinner{border:4px solid rgba(0,0,0,0.06);border-top:4px solid var(--green-2);border-radius:50%;width:22px;height:22px;animation:spin .9s linear infinite;margin:0 auto 10px}
+
+        .divider{text-align:center;margin:22px 0;color:#9aa29b}
+        .other-links{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .other-links a{padding:10px;text-align:center;background:#f7f9f7;color:var(--green-3);text-decoration:none;border-radius:8px;font-size:13px;transition:background .2s}
+        .other-links a:hover{background:#eef6ee}
+
+        @media (max-width:480px){
+            .container{padding:26px}
+            h1{font-size:18px}
+            .role-selection{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🔑</div>
+        <h1>Login to Edumentor</h1>
+        
+        <div id="alert" class="alert"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label>I am a:</label>
+                <div class="role-selection">
+                    <div class="role-option">
+                        <input type="radio" id="roleTeacher" name="role" value="teacher" checked>
+                        <label for="roleTeacher">👨‍🏫 Teacher</label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" id="roleSchool" name="role" value="school">
+                        <label for="roleSchool">🏫 School</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password *</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Logging in...</p>
+            </div>
+            
+            <button type="submit" class="btn" id="loginBtn">Login</button>
+        </form>
+        
+        <div class="divider">OR</div>
+        
+        <div class="other-links">
+            <a href="teacher-register.html">📝 Register as Teacher</a>
+            <a href="school-register.html">📝 Register as School</a>
+        </div>
+        
+        <p class="signup-link">
+            <a href="index.html">← Back to Home</a>
+        </p>
+    </div>
+    
+    <script>
+        // API base (dynamic). Uses window.location.origin when served over http(s), otherwise falls back to localhost backend.
+        const API_BASE = (window._API_BASE_ || (location.protocol.startsWith('http') ? window.location.origin : 'http://127.0.0.1:8000'));
+
+        const form = document.getElementById('loginForm');
+        const alert = document.getElementById('alert');
+        const loading = document.getElementById('loading');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            alert.style.display = 'none';
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+            
+            try {
+                loading.style.display = 'block';
+                loginBtn.disabled = true;
+                
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                // Handle response statuses explicitly
+                if (!response.ok) {
+                    // If account not activated (403) redirect teachers to payment
+                    if (response.status === 403) {
+                        const err = await response.json().catch(() => ({}));
+                        showAlert('⚠️ ' + (err.detail || 'Account not activated. Please complete payment.'), 'info');
+                        // send teacher to payment flow to complete activation
+                        setTimeout(() => { window.location.href = 'teacher-payment.html'; }, 2000);
+                        return;
+                    }
+
+                    const error = await response.json().catch(() => ({}));
+                    throw new Error(error.detail || 'Login failed');
+                }
+
+                const result = await response.json();
+                
+                // Store login info
+                localStorage.setItem('user_id', result.user.id);
+                localStorage.setItem('userName', result.user.name);
+                localStorage.setItem('userRole', result.user.role);
+                localStorage.setItem('user_active', result.active ? '1' : '0');
+
+                // Persist role-specific ids so dashboards can read them directly
+                if (result.user.role === 'school') {
+                    localStorage.setItem('school_id', result.user.id);
+                    localStorage.setItem('schoolName', result.user.name);
+                    if (result.user.email) localStorage.setItem('schoolEmail', result.user.email);
+                }
+
+                if (result.user.role === 'teacher') {
+                    // Try to fetch the teacher profile linked to this user and persist its id
+                    try {
+                        const tRes = await fetch(`${API_BASE}/teachers/by_user/${result.user.id}`);
+                        if (tRes.ok) {
+                            const tData = await tRes.json();
+                            if (tData && tData.id) {
+                                localStorage.setItem('teacher_id', tData.id);
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('No linked teacher profile found for user', e);
+                    }
+                }
+
+                // If the selected role doesn't match the account role, warn briefly
+                if (role !== result.user.role) {
+                    showAlert(`⚠️ You selected "${role}" but logged in as "${result.user.role}". Redirecting...`, 'info');
+                }
+
+                // Redirect logic:
+                // - If account is a teacher: if activated -> teacher dashboard, else -> payment page
+                // - If account is a school: go to school dashboard
+                if (result.user.role === 'teacher') {
+                    if (result.active) {
+                        window.location.href = 'teacher-dashboard.html';
+                    } else {
+                        // send teacher to payment flow to complete activation
+                        window.location.href = 'teacher-payment.html';
+                    }
+                } else if (result.user.role === 'school') {
+                    window.location.href = 'school-dashboard.html';
+                } else {
+                    // Fallback: use selected role
+                    if (role === 'teacher') window.location.href = 'teacher-dashboard.html';
+                    else window.location.href = 'school-dashboard.html';
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('❌ ' + error.message, 'error');
+            } finally {
+                loading.style.display = 'none';
+                loginBtn.disabled = false;
+            }
+        });
+        
+        function showAlert(message, type) {
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6915cc6457077a195b0cfa8e/1j9uicrkb';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+</body>
+</html>

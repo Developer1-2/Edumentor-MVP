@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment - Edumentor</title>
+    <style>
+        :root{--green-1:#27ae60;--green-2:#229954;--green-3:#1e8449;--text:#2c3e50}
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,var(--green-1),var(--green-2));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        body::before{content:'';position:fixed;width:200%;height:200%;top:-50%;left:-50%;background:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:50px 50px;animation:float 15s linear infinite;z-index:0;pointer-events:none}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        .container{background:#fff;padding:32px;border-radius:12px;max-width:680px;width:100%;z-index:1;box-shadow:0 20px 60px rgba(39,174,96,0.12);border-top:5px solid var(--green-1);animation:fadeInUp .7s ease-out}
+        .payment-header{text-align:center;margin-bottom:26px}
+        .payment-header h1{font-size:26px;color:var(--text);margin-bottom:6px}
+        .payment-header p{color:#556b5f}
+        .payment-methods{margin-bottom:22px}
+        .payment-methods h3{margin-bottom:12px;font-weight:600}
+        .summary{background:#f7f9f6;padding:18px;border-radius:10px;margin-bottom:22px;border-left:6px solid var(--green-1)}
+        .summary-row{display:flex;justify-content:space-between;margin-bottom:8px;color:var(--text)}
+        .summary-row.total{border-top:1px solid #eee;padding-top:10px;font-weight:700;color:var(--green-3)}
+        .info-box{background:#f0fbf4;border-left:4px solid var(--green-1);padding:14px;margin-bottom:18px;border-radius:8px;color:#345645}
+        .form-group{margin-bottom:16px}
+        label{display:block;margin-bottom:8px;color:#556b5f;font-weight:600}
+        input{width:100%;padding:12px;border:2px solid #eee;border-radius:8px;background:#fbfefe;transition:all .18s}
+        input:focus{outline:none;border-color:var(--green-1);box-shadow:0 8px 30px rgba(39,174,96,0.06)}
+        .method-group{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+        .method-btn{padding:14px;border-radius:10px;border:2px solid transparent;background:#fff;cursor:pointer;transition:transform .18s,box-shadow .18s;font-weight:600}
+        .method-btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(39,174,96,0.06)}
+        .method-btn.active{background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff}
+        .phone-input-group{display:flex;gap:10px}
+        .country-code{flex:0 0 90px}
+        .phone-number{flex:1}
+        .btn{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--green-1),var(--green-2));color:#fff;font-weight:700;cursor:pointer;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden}
+        .btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(39,174,96,0.16)}
+        .btn:disabled{opacity:.7}
+        .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+        .btn:hover::before{width:300px;height:300px}
+        .loading{display:none;text-align:center;color:var(--green-2);font-weight:700;margin-top:14px}
+        .spinner{width:22px;height:22px;border-radius:50%;border:4px solid rgba(0,0,0,0.06);border-top:4px solid var(--green-2);animation:spin .9s linear infinite;margin:0 auto 8px}
+        .alert{display:none;padding:12px 14px;border-radius:8px;margin-bottom:12px}
+        .alert-success{background:#f0fff6;border:1px solid #d1f3df;color:#115a2e}
+        .alert-error{background:#fdeeed;border:1px solid #f5c6cb;color:#7a2a2a}
+        @media(max-width:480px){.container{padding:22px}.payment-header h1{font-size:20px}.method-group{grid-template-columns:1fr 1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="payment-header">
+            <h1>💳 Complete Your Payment</h1>
+            <p>Activate your teacher account on Edumentor</p>
+        </div>
+        
+        <div id="alert" class="alert"></div>
+        
+        <!-- Order Summary -->
+        <div class="summary">
+            <div class="summary-row">
+                <label>Activation Fee:</label>
+                <span>UGX 50,000</span>
+            </div>
+            <div class="summary-row">
+                <label>Validity:</label>
+                <span>3 Months</span>
+            </div>
+            <div class="summary-row total">
+                <label>Total:</label>
+                <span>UGX 50,000</span>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            ℹ️ <strong>MVP Payment:</strong> This is a test payment. After payment, your account will be activated and you can be discovered by schools and parents on our platform.
+        </div>
+        
+        <!-- Payment Method Selection -->
+        <form id="paymentForm">
+            <div class="payment-methods">
+                <h3>Select Payment Method</h3>
+                <div class="method-group">
+                    <button type="button" class="method-btn active" data-method="MTN">
+                        📱 MTN Mobile
+                    </button>
+                    <button type="button" class="method-btn" data-method="AIRTEL">
+                        📱 Airtel Money
+                    </button>
+                    <button type="button" class="method-btn" data-method="CARD">
+                        💳 Card
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Phone Number Input (for Mobile Money) -->
+            <div id="mobileSection" style="display: block;">
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number *</label>
+                    <div class="phone-input-group">
+                        <input type="text" class="country-code" value="+256" disabled>
+                        <input type="tel" id="phoneNumber" class="phone-number" name="phone_number" placeholder="700123456" required>
+                    </div>
+                    <small style="color: #666; margin-top: 5px; display: block;">Enter number without +256 or 0</small>
+                </div>
+            </div>
+            
+            <!-- Card Section (hidden for MVP) -->
+            <div id="cardSection" style="display: none;">
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="text" id="cardNumber" name="card_number" placeholder="1234 5678 9012 3456">
+                </div>
+            </div>
+            
+            <!-- Hidden Fields -->
+            <input type="hidden" id="paymentMethod" name="method" value="MTN">
+            <input type="hidden" id="amount" name="amount" value="50000">
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing payment...</p>
+            </div>
+            
+            <button type="submit" class="btn" id="payBtn">Pay UGX 50,000</button>
+        </form>
+    </div>
+    
+    <script>
+        // API base (dynamic). Uses window.location.origin when served over http(s), otherwise falls back to localhost backend.
+        const API_BASE = (window._API_BASE_ || (location.protocol.startsWith('http') ? window.location.origin : 'http://127.0.0.1:8000'));
+
+        const form = document.getElementById('paymentForm');
+        const paymentMethod = document.getElementById('paymentMethod');
+        const alert = document.getElementById('alert');
+        const loading = document.getElementById('loading');
+        const mobileSection = document.getElementById('mobileSection');
+        const cardSection = document.getElementById('cardSection');
+        const methodBtns = document.querySelectorAll('.method-btn');
+        
+        // Get user data from localStorage
+        const userId = localStorage.getItem('user_id');
+        const teacherId = localStorage.getItem('teacher_id');
+        const userEmail = localStorage.getItem('userEmail');
+        const userName = localStorage.getItem('userName');
+        
+        if (!userId || !teacherId) {
+            showAlert('Error: User or Teacher ID not found. Please register first.', 'error');
+        }
+        
+        // Method selection
+        methodBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Update active state
+                methodBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update payment method
+                const method = btn.dataset.method;
+                paymentMethod.value = method;
+                
+                // Show/hide sections
+                if (method === 'MTN' || method === 'AIRTEL') {
+                    mobileSection.style.display = 'block';
+                    cardSection.style.display = 'none';
+                } else if (method === 'CARD') {
+                    mobileSection.style.display = 'none';
+                    cardSection.style.display = 'block';
+                }
+            });
+        });
+        
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            alert.style.display = 'none';
+            
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const method = paymentMethod.value;
+            
+            if ((method === 'MTN' || method === 'AIRTEL') && !phoneNumber) {
+                showAlert('Please enter your phone number', 'error');
+                return;
+            }
+            
+            try {
+                loading.style.display = 'block';
+                
+                // Prepare payment data
+                const paymentData = {
+                    teacher_id: parseInt(teacherId),
+                    amount: 50000,
+                    method: method,
+                    phone_number: '+256' + phoneNumber
+                };
+                
+                // Initiate payment
+                const response = await fetch(`${API_BASE}/payments/initiate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Payment initiation failed');
+                }
+                
+                const result = await response.json();
+                
+                showAlert('✅ Payment initiated! Check your phone for confirmation. You will be redirected shortly...', 'success');
+                
+                // Simulate payment processing and redirect
+                setTimeout(() => {
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    window.location.href = 'payment-success.html';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error: ' + error.message, 'error');
+                loading.style.display = 'none';
+            }
+        });
+        
+        function showAlert(message, type) {
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: edumentor
+      POSTGRES_PASSWORD: edumentor_pass
+      POSTGRES_DB: edumentor
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - edunet
+
+  web:
+    build: .
+    command: gunicorn -k uvicorn.workers.UvicornWorker routes.main:app --bind 0.0.0.0:8000 --workers 4
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://edumentor:edumentor_pass@db:5432/edumentor
+      EVERSEND_API_KEY: ""
+      EVERSEND_SECRET: ""
+      SECRET_KEY: "replace-with-secret"
+    depends_on:
+      - db
+    networks:
+      - edunet
+
+volumes:
+  db_data:
+
+networks:
+  edunet:
+    driver: bridge

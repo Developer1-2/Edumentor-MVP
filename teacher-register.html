@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration - Edumentor</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 15s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(39, 174, 96, 0.2);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+            border-top: 5px solid #27ae60;
+        }
+        
+        .logo {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #27ae60;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 700;
+            animation: slideInLeft 0.8s ease-out 0.1s backwards;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 14px;
+            animation: slideInLeft 0.8s ease-out 0.2s backwards;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            animation: fadeIn 0.8s ease-out backwards;
+        }
+        
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.35s; }
+        .form-group:nth-child(3) { animation-delay: 0.4s; }
+        .form-group:nth-child(4) { animation-delay: 0.45s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.55s; }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #27ae60;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out 0.6s backwards;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            animation: fadeIn 0.8s ease-out 0.65s backwards;
+        }
+        
+        .login-link a {
+            color: #27ae60;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .login-link a:hover {
+            color: #1e8449;
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideInLeft 0.4s ease-out;
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #27ae60;
+            font-weight: bold;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .spinner {
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #27ae60;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { 
+                transform: rotate(0deg);
+                border-top-color: #27ae60;
+            }
+            25% {
+                border-top-color: #229954;
+            }
+            50% {
+                border-top-color: #1e8449;
+            }
+            75% {
+                border-top-color: #27ae60;
+            }
+            100% { 
+                transform: rotate(360deg);
+                border-top-color: #27ae60;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .logo {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">👨‍🏫</div>
+        <h1>Teacher Registration</h1>
+        <p class="subtitle">Create your account and start your journey</p>
+        
+        <div id="alert" class="alert"></div>
+        
+        <form id="teacherForm">
+            <!-- Personal Information -->
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password <mandatory style="color: #dc3545;">*</mandatory></label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password <mandatory style="color: #dc3545;">*</mandatory></label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter password" required>
+            </div>
+            
+            <!-- Teacher Profile -->
+            <div class="form-group">
+                <label for="subject">Subject *</label>
+                <input type="text" id="subject" name="subject" placeholder="Mathematics, English, Science..." required>
+            </div>
+            
+            <div class="form-group">
+                <label for="bio">Bio / Experience</label>
+                <textarea id="bio" name="bio" placeholder="Tell us about your teaching experience..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" placeholder="City or Region">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="text" id="phone" name="phone" placeholder="e.g., +256771234567" required>
+            </div>
+
+            <div class="form-group">
+                <label for="experience_years">Years of Experience</label>
+                <input type="number" id="experience_years" name="experience_years" min="0" placeholder="e.g., 3">
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Creating your account...</p>
+            </div>
+            
+            <button type="submit" class="btn" id="submitBtn">Register & Proceed to Payment</button>
+        </form>
+        
+        <p class="login-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </p>
+    </div>
+    
+    <script>
+        const form = document.getElementById('teacherForm');
+        const alert = document.getElementById('alert');
+        const loading = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // API base (dynamic). Uses window.location.origin when served over http(s), otherwise falls back to localhost backend.
+        const API_BASE = (window._API_BASE_ || (location.protocol.startsWith('http') ? window.location.origin : 'http://127.0.0.1:8000'));
+
+        // Retrieve user_id from localStorage if coming from registration
+        function getUserIdFromStorage() {
+            return localStorage.getItem('user_id');
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Hide alert
+            alert.style.display = 'none';
+            
+            // Get form data
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            // Basic client-side validation
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters', 'error');
+                return;
+            }
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: password,
+                role: 'teacher'
+            };
+            
+            const teacherData = {
+                subject: document.getElementById('subject').value,
+                bio: document.getElementById('bio').value,
+                location: document.getElementById('location').value
+            };
+            
+            try {
+                // Show loading
+                loading.style.display = 'block';
+                submitBtn.disabled = true;
+                
+                // 1. Register user
+                const registerResponse = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!registerResponse.ok) {
+                    const error = await registerResponse.json();
+                    throw new Error(error.detail || 'Registration failed');
+                }
+                
+                const userData = await registerResponse.json();
+                const userId = userData.user_id;
+                
+                // Store user_id for payment processing
+                localStorage.setItem('user_id', userId);
+                localStorage.setItem('userEmail', formData.email);
+                localStorage.setItem('userName', formData.name);
+                
+                // 2. Create teacher profile
+                const teacherResponse = await fetch(`${API_BASE}/teachers/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        subject: teacherData.subject,
+                        bio: teacherData.bio,
+                        location: teacherData.location,
+                        phone: document.getElementById('phone').value,
+                        experience_years: parseInt(document.getElementById('experience_years').value || 0) || null,
+                        user_id: userId
+                    })
+                });
+                
+                if (!teacherResponse.ok) {
+                    const error = await teacherResponse.json();
+                    throw new Error(error.detail || 'Teacher profile creation failed');
+                }
+                
+                const teacherData_response = await teacherResponse.json();
+                const teacherId = teacherData_response.teacher.id;
+                
+                // Store teacher_id for payment processing
+                localStorage.setItem('teacher_id', teacherId);
+                
+                // Show success message
+                showAlert('Account created successfully! Redirecting to payment...', 'success');
+                
+                // Redirect to payment page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'teacher-payment.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error: ' + error.message, 'error');
+            } finally {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+        
+        function showAlert(message, type) {
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
