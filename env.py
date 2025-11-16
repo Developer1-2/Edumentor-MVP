@@ -19,8 +19,8 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-from routes.database import Base
-import routes.models as models
+from database import Base
+import models as models
 
 target_metadata = Base.metadata
 
@@ -59,3 +59,4 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+
