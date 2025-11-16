@@ -14,7 +14,7 @@ services:
 
   web:
     build: .
-    command: gunicorn -k uvicorn.workers.UvicornWorker routes.main:app --bind 0.0.0.0:8000 --workers 4
+    command: gunicorn -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000 --workers 4
     ports:
       - "8000:8000"
     environment:
@@ -33,3 +33,4 @@ volumes:
 networks:
   edunet:
     driver: bridge
+
