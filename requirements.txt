@@ -5,9 +5,10 @@ uvicorn[standard]
 gunicorn
 sqlalchemy
 psycopg2-binary
-pydantic
+pydantic[email]
 bcrypt
 requests
 python-dotenv
 alembic
+
 
