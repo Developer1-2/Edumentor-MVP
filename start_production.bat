@@ -10,5 +10,6 @@ set PORT=8000
 set WORKERS=4
 
 echo Starting Edumentor API on %HOST%:%PORT% with %WORKERS% workers...
-python -m uvicorn routes.main:app --host %HOST% --port %PORT% --workers %WORKERS%
+python -m uvicorn main:app --host %HOST% --port %PORT% --workers %WORKERS%
 pause
+
