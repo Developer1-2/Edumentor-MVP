@@ -54,7 +54,7 @@ def home():
     return {"message": "Welcome to Edumentor MVP API"}
 
 # Serve static HTML files from project root
-static_dir = Path(__file__).parent.parent
+static_dir = Path(__file__).parent
 html_files = [
     'index.html', 'login.html', 'teacher-register.html', 'teacher-payment.html',
     'payment-success.html', 'school-register.html', 'teacher-dashboard.html',
@@ -70,8 +70,7 @@ for html in html_files:
             return FileResponse(file_path, media_type="text/html")
 
 
-
 if __name__ == "__main__":
     # Local development convenience: only run uvicorn when this module is executed directly.
-    # For production use, run with an ASGI server: e.g. `uvicorn routes.main:app --host 0.0.0.0 --port 8000 --workers 4`
+    # For production use, run with an ASGI server: e.g. `uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4`
     uvicorn.run(app, host="127.0.0.1", port=8000)

@@ -1,10 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from models import User
-from schemas import UserCreate, UserLogin
-from models import Notification
-from schemas import NotificationOut
+from models import User, Notification
+from schemas import UserCreate, UserLogin, NotificationOut
 import bcrypt
 
 
@@ -31,11 +29,12 @@ def get_db():
         db.close()
 
 
-    # --- Notification Endpoint for Teachers ---
+# --- Notification Endpoint for Teachers ---
 @router.get("/notifications/{user_id}", response_model=list[NotificationOut])
 def get_notifications(user_id: int, db: Session = Depends(get_db)):
     notifs = db.query(Notification).filter(Notification.recipient_user_id == user_id).order_by(Notification.created_at.desc()).all()
     return notifs
+
 @router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
     # Server-side validation
