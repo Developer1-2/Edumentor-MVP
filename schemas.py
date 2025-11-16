@@ -39,10 +39,6 @@ class TeacherBase(BaseModel):
     experience_years: Optional[int] = None
 
 
-class TeacherCreate(TeacherBase):
-    pass
-
-
 class TeacherUpdate(BaseModel):
     subject: Optional[str] = None
     bio: Optional[str] = None
@@ -74,7 +70,7 @@ class PaymentBase(BaseModel):
     amount: float
     method: str
 
-class PaymentCreate(PaymentBase):
+class PaymentCreateSchema(PaymentBase):
     phone_number: str
 
 class PaymentOut(BaseModel):

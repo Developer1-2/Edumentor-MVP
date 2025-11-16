@@ -2,10 +2,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from models import JobPosting, School
-from schemas import JobPostingCreate, JobPostingUpdate, JobPostingOut
-from models import JobApplication, Notification
-from schemas import JobApplicationCreate, JobApplicationOut, NotificationCreate, NotificationOut
+from models import JobPosting, School, JobApplication, Notification
+from schemas import JobPostingCreate, JobPostingUpdate, JobPostingOut, JobApplicationCreate, JobApplicationOut, NotificationCreate, NotificationOut
 import typing as t
 
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
