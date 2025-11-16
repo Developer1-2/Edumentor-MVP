@@ -1,14 +1,7 @@
 fastapi
-uvicorn[standard]
+uvicorn
 sqlalchemy
 pydantic
+bcrypt[email]
 bcrypt
-requests
-python-dotenv
 
-# Optional: add test / dev tools
-pytest
-httpx
-alembic
-psycopg2-binary
-gunicorn
